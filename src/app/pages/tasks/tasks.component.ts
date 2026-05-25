@@ -99,7 +99,8 @@ export class TasksComponent {
   private openDialog(data?: TaskFormDialogData): void {
     const ref = this.dialog.open(TaskFormDialogComponent, {
       width: '520px',
-      maxWidth: '95vw',
+      maxWidth: 'min(520px, 95vw)',
+      panelClass: 'task-form-dialog-panel',
       data: data ?? {},
     });
     ref.afterClosed().subscribe((result) => {

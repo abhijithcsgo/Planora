@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{ data.task ? 'Edit Task' : 'New Task' }}</h2>
-<mat-dialog-content>
+<mat-dialog-content class="task-form-dialog__content">
   <form [formGroup]="form" class="task-form">
     <mat-form-field appearance="outline">
       <mat-label>Title</mat-label>
@@ -11,7 +11,7 @@
       <textarea matInput formControlName="description" rows="3"></textarea>
     </mat-form-field>
 
-    <div class="task-form__row">
+    <div class="task-form__row task-form__row--split">
       <mat-form-field appearance="outline">
         <mat-label>Category</mat-label>
         <mat-select formControlName="category">
@@ -31,7 +31,7 @@
       </mat-form-field>
     </div>
 
-    <div class="task-form__row">
+    <div class="task-form__stack">
       <mat-form-field appearance="outline" class="task-form__date-field">
         <mat-label>Due date (optional)</mat-label>
         <input
@@ -50,8 +50,8 @@
         ></mat-datepicker-toggle>
         <mat-datepicker
           #dueDatePicker
-          panelClass="taskflow-datepicker-panel"
-          touchUi="false"
+          panelClass="planora-datepicker-panel"
+          [touchUi]="useTouchDatepicker()"
         ></mat-datepicker>
       </mat-form-field>
 
@@ -65,7 +65,7 @@
 
     @if (form.get('reminderEnabled')?.value) {
       <p class="task-form__hint">You will get a popup and sound alert at the selected time.</p>
-      <div class="task-form__row">
+      <div class="task-form__stack">
         <mat-form-field appearance="outline" class="task-form__date-field">
           <mat-label>Reminder date</mat-label>
           <input
@@ -84,8 +84,8 @@
           ></mat-datepicker-toggle>
           <mat-datepicker
             #reminderDatePicker
-            panelClass="taskflow-datepicker-panel"
-            touchUi="false"
+            panelClass="planora-datepicker-panel"
+            [touchUi]="useTouchDatepicker()"
           ></mat-datepicker>
         </mat-form-field>
 

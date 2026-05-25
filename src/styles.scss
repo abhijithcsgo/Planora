@@ -167,11 +167,28 @@ a.mat-mdc-icon-button {
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
 }
 
+.task-form-dialog-panel .mat-mdc-dialog-container {
+  max-width: 95vw;
+  margin: 16px;
+}
+
+@media (max-width: 600px) {
+  .task-form-dialog-panel .mat-mdc-dialog-container {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+
+  .task-form-dialog-panel .mat-mdc-dialog-content {
+    max-height: 65vh;
+  }
+}
+
 .cdk-overlay-dark-backdrop {
   background: rgba(15, 23, 42, 0.65);
 }
 
 /* Datepicker must appear above dialogs (z-index ~1000) */
+.cdk-overlay-container .planora-datepicker-panel,
 .cdk-overlay-container .taskflow-datepicker-panel,
 .cdk-overlay-container .mat-datepicker-popup,
 .cdk-overlay-container .mat-mdc-datepicker-popup {

@@ -162,7 +162,8 @@ export class CalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   private openTaskDialog(data: TaskFormDialogData): void {
     const ref = this.dialog.open(TaskFormDialogComponent, {
       width: '520px',
-      maxWidth: '95vw',
+      maxWidth: 'min(520px, 95vw)',
+      panelClass: 'task-form-dialog-panel',
       data,
     });
     ref.afterClosed().subscribe((result) => {

@@ -1,3 +1,13 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+
+.task-form-dialog__content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 .task-form__hint {
   margin: 0 0 0.75rem;
   font-size: 0.8rem;
@@ -5,10 +15,8 @@
 }
 
 .task-form__date-field {
-  ::ng-deep .mat-datepicker-toggle {
-    button {
-      color: var(--icon-color);
-    }
+  ::ng-deep .mat-datepicker-toggle button {
+    color: var(--icon-color);
   }
 }
 
@@ -16,20 +24,40 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  min-width: 320px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding-top: 0.5rem;
+  box-sizing: border-box;
 
   mat-form-field {
     width: 100%;
+    min-width: 0;
   }
 
-  &__row {
+  &__row--split {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       grid-template-columns: 1fr;
+      gap: 0.25rem;
     }
+  }
+
+  &__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  :host ::ng-deep .mat-mdc-dialog-content {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }

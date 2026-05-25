@@ -1,4 +1,7 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, inject, OnInit, viewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -42,8 +45,13 @@ export interface TaskFormDialogData {
 })
 export class TaskFormDialogComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly breakpoint = inject(BreakpointObserver);
   readonly data = inject<TaskFormDialogData>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<TaskFormDialogComponent>);
+  private readonly isHandset = toSignal(
+    this.breakpoint.observe('(max-width: 768px)').pipe(map((r) => r.matches)),
+    { initialValue: false },
+  );
   private readonly dueDatePicker = viewChild<MatDatepicker<Date>>('dueDatePicker');
   private readonly reminderDatePicker =
     viewChild<MatDatepicker<Date>>('reminderDatePicker');
@@ -127,6 +135,10 @@ export class TaskFormDialogComponent implements OnInit {
       reminderDateTime,
       completed: v.completed ?? false,
     });
+  }
+
+  useTouchDatepicker(): boolean {
+    return this.isHandset() ?? false;
   }
 
   openDueDatePicker(): void {

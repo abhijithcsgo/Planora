@@ -97,9 +97,10 @@ Output: `dist/planora/browser`
    "build:gh-pages": "ng build --configuration production --base-href /YOUR-REPO-NAME/"
    ```
 
-2. Enable **GitHub Pages** → Source: **GitHub Actions**.
+2. Enable **GitHub Pages** → **Build and deployment** → **Source: GitHub Actions** (not “Deploy from a branch”).  
+   If Source is set to `main` / `(root)`, the site will show **README.md** instead of the Angular app.
 
-3. Push to `main` / `master`. The workflow in `.github/workflows/deploy-gh-pages.yml` builds and deploys automatically.
+3. Open **Actions** → **Deploy to GitHub Pages** → **Run workflow** (first time), or push to `main`. Wait until the workflow shows a green checkmark.
 
 4. Or deploy manually:
 

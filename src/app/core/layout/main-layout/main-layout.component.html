@@ -1,0 +1,109 @@
+<mat-sidenav-container class="layout">
+  <!-- Mobile drawer only -->
+  <mat-sidenav
+    class="layout__drawer"
+    [mode]="'over'"
+    [opened]="sidebarOpen()"
+    (closedStart)="closeSidebar()"
+  >
+    <ng-container *ngTemplateOutlet="sidebarNav" />
+  </mat-sidenav>
+
+  <mat-sidenav-content class="layout__content">
+    <div class="app-shell">
+      <!-- Desktop sidebar (in grid, not fixed overlay) -->
+      <aside class="app-shell__sidebar">
+        <ng-container *ngTemplateOutlet="sidebarNav" />
+      </aside>
+
+      <div class="app-shell__body">
+        <header class="navbar">
+          <button
+            class="navbar__menu"
+            mat-icon-button
+            (click)="toggleSidebar()"
+            aria-label="Open menu"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+          <div class="navbar__brand">
+            <img
+              src="/logo.svg"
+              alt=""
+              class="brand-logo"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+            <span>Planora</span>
+          </div>
+          <div class="navbar__actions">
+            <span class="navbar__badge-wrap">
+              <a
+                routerLink="/reminders"
+                mat-icon-button
+                matTooltip="Reminders"
+                [matBadge]="(badgeCount$ | async) ?? 0"
+                [matBadgeHidden]="((badgeCount$ | async) ?? 0) === 0"
+                matBadgeColor="warn"
+                matBadgeSize="small"
+                matBadgePosition="above after"
+              >
+                <mat-icon>notifications</mat-icon>
+              </a>
+            </span>
+        <button
+          mat-icon-button
+          (click)="toggleTheme()"
+          [matTooltip]="(settingsService.settings$ | async)?.darkMode ? 'Light mode' : 'Dark mode'"
+        >
+          <mat-icon>{{
+            (settingsService.settings$ | async)?.darkMode ? 'light_mode' : 'dark_mode'
+          }}</mat-icon>
+        </button>
+          </div>
+        </header>
+
+        <main class="main">
+          <router-outlet />
+        </main>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Shared sidebar markup -->
+<ng-template #sidebarNav>
+  <div class="sidebar">
+    <div class="sidebar__brand">
+      <img
+        src="/logo.svg"
+        alt=""
+        class="brand-logo"
+        width="32"
+        height="32"
+        decoding="async"
+      />
+      <span>Planora</span>
+    </div>
+    <nav class="sidebar__nav">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+    <div class="sidebar__footer">
+      <small>Productivity Suite v1.0</small>
+    </div>
+  </div>
+</ng-template>
+
+@if (activeReminder(); as reminder) {
+  <app-reminder-popup [reminder]="reminder" (dismiss)="dismissReminder()" />
+}

@@ -1,0 +1,14 @@
+<div class="page-header animate-fade-in">
+  <div>
+    <h1>{{ title() }}</h1>
+    @if (subtitle()) {
+      <p>{{ subtitle() }}</p>
+    }
+  </div>
+  @if (actionLabel()) {
+    <button mat-flat-button color="primary" (click)="actionClick.emit()">
+      <mat-icon>{{ actionIcon() }}</mat-icon>
+      {{ actionLabel() }}
+    </button>
+  }
+</div>

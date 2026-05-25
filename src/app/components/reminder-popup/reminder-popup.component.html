@@ -1,0 +1,12 @@
+<div class="reminder-popup animate-fade-in">
+  <div class="reminder-popup__header">
+    <mat-icon>notifications_active</mat-icon>
+    <span>Reminder</span>
+    <button mat-icon-button (click)="dismiss.emit()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <h4>{{ reminder().taskTitle }}</h4>
+  <p>{{ reminder().reminderDateTime | date: 'medium' }}</p>
+  <button mat-flat-button color="primary" (click)="dismiss.emit()">Got it</button>
+</div>

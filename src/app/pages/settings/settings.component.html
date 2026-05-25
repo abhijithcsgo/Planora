@@ -1,0 +1,75 @@
+<app-page-header title="Settings" subtitle="Customize your Planora experience" />
+
+@if (settings$ | async; as settings) {
+  <div class="settings-sections">
+    <section class="settings-card">
+      <h3><mat-icon>palette</mat-icon> Appearance</h3>
+      <mat-slide-toggle
+        [ngModel]="settings.darkMode"
+        (ngModelChange)="updateSetting('darkMode', $event)"
+      >
+        Dark mode
+      </mat-slide-toggle>
+    </section>
+
+    <section class="settings-card">
+      <h3><mat-icon>notifications</mat-icon> Notifications</h3>
+      <mat-slide-toggle
+        [ngModel]="settings.notificationsEnabled"
+        (ngModelChange)="updateSetting('notificationsEnabled', $event)"
+      >
+        Enable notifications
+      </mat-slide-toggle>
+      <mat-slide-toggle
+        [ngModel]="settings.reminderSound"
+        (ngModelChange)="updateSetting('reminderSound', $event)"
+      >
+        Reminder sound
+      </mat-slide-toggle>
+      <button mat-stroked-button (click)="requestNotifications()">
+        Request browser permission
+      </button>
+    </section>
+
+    <section class="settings-card">
+      <h3><mat-icon>calendar_month</mat-icon> Calendar</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Default view</mat-label>
+        <mat-select
+          [ngModel]="settings.defaultCalendarView"
+          (ngModelChange)="updateSetting('defaultCalendarView', $event)"
+        >
+          <mat-option value="dayGridMonth">Month</mat-option>
+          <mat-option value="timeGridWeek">Week</mat-option>
+          <mat-option value="timeGridDay">Day</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+
+    <section class="settings-card">
+      <h3><mat-icon>storage</mat-icon> Data</h3>
+      <mat-slide-toggle
+        [ngModel]="settings.autoSave"
+        (ngModelChange)="updateSetting('autoSave', $event)"
+      >
+        Auto-save to localStorage
+      </mat-slide-toggle>
+      <div class="settings-card__actions">
+        <button mat-flat-button color="primary" (click)="exportPdf()">
+          <mat-icon>picture_as_pdf</mat-icon> Export tasks to PDF
+        </button>
+        <button mat-stroked-button (click)="resetSampleData()">Load sample data (optional)</button>
+        <button mat-stroked-button color="warn" (click)="clearAllTasks()">Clear all tasks</button>
+        <button mat-stroked-button color="warn" (click)="clearAllNotes()">Clear all notes</button>
+        <button mat-stroked-button color="warn" (click)="clearAllData()">Clear all app data</button>
+        <button mat-button (click)="resetSettings()">Reset settings</button>
+      </div>
+    </section>
+
+    <section class="settings-card about">
+      <h3><mat-icon>info</mat-icon> About Planora</h3>
+      <p>Frontend-only productivity app. Data stored in your browser localStorage.</p>
+      <p class="version">Version 1.0.0 · PWA enabled · Offline ready</p>
+    </section>
+  </div>
+}

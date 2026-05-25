@@ -1,0 +1,70 @@
+<app-page-header
+  title="Notes"
+  subtitle="Quick notes and ideas — pinned notes appear first"
+  actionLabel="Add Note"
+  actionIcon="add"
+  (actionClick)="openAdd()"
+/>
+
+@if (showForm) {
+  <div class="note-form card animate-fade-in">
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Content</mat-label>
+        <textarea matInput formControlName="content" rows="4"></textarea>
+      </mat-form-field>
+      <div class="color-picker">
+        @for (c of colors; track c) {
+          <button
+            type="button"
+            class="color-dot"
+            [style.background]="c"
+            [class.selected]="form.get('color')?.value === c"
+            (click)="form.patchValue({ color: c })"
+          ></button>
+        }
+      </div>
+      <div class="note-form__actions">
+        <button mat-button (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">
+          {{ editingNote ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}
+
+@if (notes$ | async; as notes) {
+  @if (notes.length) {
+    <div class="notes-grid">
+      @for (note of notes; track note.id) {
+        <article
+          class="note-card animate-fade-in"
+          [style.borderTopColor]="note.color"
+          (click)="openEdit(note)"
+        >
+          <div class="note-card__header">
+            @if (note.pinned) {
+              <mat-icon class="pinned">push_pin</mat-icon>
+            }
+            <button mat-icon-button (click)="togglePin(note); $event.stopPropagation()">
+              <mat-icon>{{ note.pinned ? 'push_pin' : 'push_pin' }}</mat-icon>
+            </button>
+            <button mat-icon-button (click)="delete(note); $event.stopPropagation()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <h4>{{ note.title }}</h4>
+          <p>{{ note.content }}</p>
+          <small>{{ note.updatedAt | date: 'medium' }}</small>
+        </article>
+      }
+    </div>
+  } @else {
+    <app-empty-state icon="sticky_note_2" title="No notes yet" message="Create your first note." />
+  }
+}

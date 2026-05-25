@@ -1,0 +1,141 @@
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  overflow: visible;
+  padding: 0.25rem 0;
+
+  app-stat-card {
+    display: block;
+    min-width: 0;
+    overflow: visible;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--card-shadow);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+
+    mat-icon {
+      flex-shrink: 0;
+      color: var(--accent-icon);
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      min-height: 24px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+}
+
+.progress-card {
+  &__value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 1rem 0 0.75rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  mat-progress-bar {
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+}
+
+.reminder-list,
+.task-preview-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.reminder-list__title {
+  flex: 1;
+  font-weight: 500;
+}
+
+.reminder-list__time {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.task-preview-list li mat-icon {
+  flex-shrink: 0;
+  color: var(--accent-icon);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+}
+
+.task-preview-list li.completed mat-icon {
+  color: #10b981;
+}
+
+.task-preview-list li.completed span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.task-preview-list div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+}
+
+.empty-hint {
+  color: var(--text-secondary);
+  margin: 0;
+}

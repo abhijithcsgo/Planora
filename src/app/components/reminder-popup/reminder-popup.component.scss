@@ -1,0 +1,46 @@
+.reminder-popup {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2000;
+  width: min(360px, calc(100vw - 2rem));
+  padding: 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6366f1;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+
+    mat-icon:first-child {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+
+    button {
+      margin-left: auto;
+    }
+  }
+
+  h4 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  button[mat-flat-button] {
+    width: 100%;
+  }
+}

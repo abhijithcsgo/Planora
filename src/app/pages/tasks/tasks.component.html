@@ -1,0 +1,119 @@
+<app-page-header
+  title="Tasks"
+  subtitle="Manage, filter, and organize your work"
+  actionLabel="Add Task"
+  actionIcon="add"
+  (actionClick)="openAddDialog()"
+/>
+
+<div class="tasks-toolbar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [ngModel]="filter().search"
+      (ngModelChange)="updateFilter('search', $event)"
+      placeholder="Search tasks..."
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Category</mat-label>
+    <mat-select [ngModel]="filter().category" (ngModelChange)="updateFilter('category', $event)">
+      @for (c of categories; track c) {
+        <mat-option [value]="c">{{ c === 'all' ? 'All' : (c | titlecase) }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Priority</mat-label>
+    <mat-select [ngModel]="filter().priority" (ngModelChange)="updateFilter('priority', $event)">
+      @for (p of priorities; track p) {
+        <mat-option [value]="p">{{ p === 'all' ? 'All' : (p | titlecase) }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+    <mat-select [ngModel]="filter().status" (ngModelChange)="updateFilter('status', $event)">
+      <mat-option value="all">All</mat-option>
+      <mat-option value="pending">Pending</mat-option>
+      <mat-option value="completed">Completed</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Sort by</mat-label>
+    <mat-select [ngModel]="sortField()" (ngModelChange)="sortField.set($event)">
+      @for (s of sortFields; track s.value) {
+        <mat-option [value]="s.value">{{ s.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-icon-button (click)="toggleSortDir()" matTooltip="Toggle sort direction">
+    <mat-icon>{{ sortDir() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+  </button>
+</div>
+
+@if (filteredTasks$ | async; as tasks) {
+  @if (tasks.length) {
+    <div
+      class="task-list"
+      cdkDropList
+      [cdkDropListData]="tasks"
+      (cdkDropListDropped)="onDrop($event)"
+    >
+      @for (task of tasks; track task.id) {
+        <div class="task-card" cdkDrag [class.completed]="task.completed">
+          <div class="task-card__drag" cdkDragHandle>
+            <mat-icon>drag_indicator</mat-icon>
+          </div>
+          <mat-checkbox
+            [checked]="task.completed"
+            (change)="toggleComplete(task)"
+            (click)="$event.stopPropagation()"
+          />
+          <div class="task-card__body" (click)="openEditDialog(task)">
+            <h4>{{ task.title }}</h4>
+            <p>{{ task.description }}</p>
+            <div class="task-card__meta">
+              <span class="chip category-{{ task.category }}">{{ task.category | titlecase }}</span>
+              <span class="chip priority-{{ task.priority }}">{{ task.priority | titlecase }}</span>
+              @if (task.dueDate) {
+                <span class="due">
+                  <mat-icon>schedule</mat-icon>{{ task.dueDate }}
+                  @if (task.dueTime) {
+                    {{ task.dueTime }}
+                  }
+                </span>
+              } @else {
+                <span class="due due--none">No due date</span>
+              }
+            </div>
+          </div>
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openEditDialog(task)">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+            <button mat-menu-item (click)="deleteTask(task, $event)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
+          </mat-menu>
+        </div>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      icon="task_alt"
+      title="No tasks found"
+      message="Try adjusting filters or add a new task."
+    />
+  }
+}

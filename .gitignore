@@ -1,0 +1,61 @@
+# Dependencies
+/node_modules
+
+# Build output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Angular cache
+/.angular/cache
+.sass-cache/
+
+# Environment & secrets (never commit)
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Test / coverage
+/coverage
+__screenshots__/
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# VS Code (keep shared team settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Optional: large design source (icons in public/ are kept)
+public/planora-logo-source.png

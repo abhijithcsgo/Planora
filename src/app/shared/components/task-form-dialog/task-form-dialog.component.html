@@ -1,0 +1,105 @@
+<h2 mat-dialog-title>{{ data.task ? 'Edit Task' : 'New Task' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="task-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="What needs to be done?" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="task-form__row">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          @for (c of categories; track c) {
+            <mat-option [value]="c">{{ c | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          @for (p of priorities; track p) {
+            <mat-option [value]="p">{{ p | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="task-form__row">
+      <mat-form-field appearance="outline" class="task-form__date-field">
+        <mat-label>Due date (optional)</mat-label>
+        <input
+          matInput
+          [matDatepicker]="dueDatePicker"
+          formControlName="dueDate"
+          placeholder="Select date"
+          autocomplete="off"
+          (click)="openDueDatePicker()"
+          (focus)="openDueDatePicker()"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="dueDatePicker"
+          aria-label="Open due date calendar"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #dueDatePicker
+          panelClass="taskflow-datepicker-panel"
+          touchUi="false"
+        ></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Due time (optional)</mat-label>
+        <input matInput type="time" formControlName="dueTime" />
+      </mat-form-field>
+    </div>
+
+    <mat-checkbox formControlName="reminderEnabled">Enable reminder</mat-checkbox>
+
+    @if (form.get('reminderEnabled')?.value) {
+      <p class="task-form__hint">You will get a popup and sound alert at the selected time.</p>
+      <div class="task-form__row">
+        <mat-form-field appearance="outline" class="task-form__date-field">
+          <mat-label>Reminder date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="reminderDatePicker"
+            formControlName="reminderDate"
+            placeholder="Select date"
+            autocomplete="off"
+            (click)="openReminderDatePicker()"
+            (focus)="openReminderDatePicker()"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="reminderDatePicker"
+            aria-label="Open reminder calendar"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            #reminderDatePicker
+            panelClass="taskflow-datepicker-panel"
+            touchUi="false"
+          ></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Reminder time</mat-label>
+          <input matInput type="time" formControlName="reminderTime" />
+        </mat-form-field>
+      </div>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">
+    {{ data.task ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

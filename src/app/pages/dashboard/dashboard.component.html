@@ -1,0 +1,92 @@
+<app-page-header
+  title="Dashboard"
+  subtitle="Welcome back — here's your productivity overview"
+/>
+
+@if (stats$ | async; as stats) {
+  <div class="dashboard-stats">
+    <app-stat-card title="Total Tasks" [value]="stats.total" icon="assignment" gradient="gradient-1" />
+    <app-stat-card title="Completed" [value]="stats.completed" icon="check_circle" gradient="gradient-2" />
+    <app-stat-card title="Pending" [value]="stats.pending" icon="pending_actions" gradient="gradient-3" />
+    <app-stat-card title="Due Today" [value]="stats.todayTasks" icon="today" gradient="gradient-4" />
+  </div>
+
+  <div class="dashboard-grid">
+    <section class="card progress-card">
+      <h3><mat-icon>trending_up</mat-icon> Productivity Progress</h3>
+      <div class="progress-card__value">{{ stats.progress }}%</div>
+      <mat-progress-bar mode="determinate" [value]="stats.progress"></mat-progress-bar>
+      <p>{{ stats.completed }} of {{ stats.total }} tasks completed</p>
+    </section>
+
+    <section class="card reminders-card">
+      <div class="card__header">
+        <h3><mat-icon>notifications_active</mat-icon> Upcoming Reminders</h3>
+        <a mat-button routerLink="/reminders">View all</a>
+      </div>
+      @if (upcoming$ | async; as reminders) {
+        @if (reminders.length) {
+          <ul class="reminder-list">
+            @for (r of reminders.slice(0, 5); track r.id) {
+              <li>
+                <span class="reminder-list__title">{{ r.taskTitle }}</span>
+                <span class="reminder-list__time">{{ r.reminderDateTime | date: 'short' }}</span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-hint">No upcoming reminders</p>
+        }
+      }
+    </section>
+
+    <section class="card tasks-card">
+      <div class="card__header">
+        <h3><mat-icon>today</mat-icon> Due Today</h3>
+        <a mat-button routerLink="/tasks">Manage tasks</a>
+      </div>
+      @if (todayTasks$ | async; as todayTasks) {
+        @if (todayTasks.length) {
+          <ul class="task-preview-list">
+            @for (t of todayTasks; track t.id) {
+              <li>
+                <mat-icon>radio_button_unchecked</mat-icon>
+                <div>
+                  <span>{{ t.title }}</span>
+                  <small>
+                    {{ t.category | titlecase }} · {{ t.priority | titlecase }}
+                    @if (t.dueTime) {
+                      · {{ t.dueTime }}
+                    }
+                  </small>
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-hint">No tasks due today</p>
+        }
+      }
+    </section>
+
+    <section class="card tasks-card">
+      <div class="card__header">
+        <h3><mat-icon>task_alt</mat-icon> Recent Tasks</h3>
+        <a mat-button routerLink="/tasks">Manage tasks</a>
+      </div>
+      @if (recentTasks$ | async; as tasks) {
+        <ul class="task-preview-list">
+          @for (t of tasks.slice(0, 6); track t.id) {
+            <li [class.completed]="t.completed">
+              <mat-icon>{{ t.completed ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <div>
+                <span>{{ t.title }}</span>
+                <small>{{ t.category | titlecase }} · {{ t.priority | titlecase }}</small>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+}

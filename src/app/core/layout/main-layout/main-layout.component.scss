@@ -1,0 +1,258 @@
+:host {
+  --sidebar-width: 260px;
+  --layout-navbar-height: 57px;
+  --layout-main-padding-y: 3rem;
+  display: block;
+  height: 100vh;
+}
+
+@media (min-width: 1025px) {
+  :host {
+    --layout-main-padding-y: 4rem;
+  }
+}
+
+.layout {
+  height: 100vh;
+  background: var(--bg-primary);
+
+  &__drawer {
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border: none;
+  }
+
+  &__content {
+    height: 100vh;
+    background: var(--bg-primary);
+  }
+}
+
+/* Shell: sidebar + main column (desktop grid) */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  @media (min-width: 1025px) {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  &__sidebar {
+    display: none;
+    background: var(--bg-sidebar);
+
+    @media (min-width: 1025px) {
+      display: flex;
+      flex-direction: column;
+      grid-column: 1;
+      grid-row: 1;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+    min-width: 0;
+    background: var(--bg-primary);
+    overflow: hidden;
+
+    @media (min-width: 1025px) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 1.25rem 0.875rem;
+  color: #e2e8f0;
+  box-sizing: border-box;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.875rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex-shrink: 0;
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      min-height: 32px;
+      flex-shrink: 0;
+      display: block;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      min-height: 44px;
+      padding: 0.625rem 0.875rem;
+      border-radius: 10px;
+      color: #94a3b8;
+      transition: background 0.2s ease, color 0.2s ease;
+
+      mat-icon {
+        flex-shrink: 0;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+      }
+
+      span {
+        line-height: 1.3;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #f1f5f9;
+      }
+
+      &.active {
+        background: rgba(99, 102, 241, 0.25);
+        color: #a5b4fc;
+      }
+    }
+  }
+
+  &__footer {
+    padding: 1rem 0.875rem 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  &__menu {
+    @media (min-width: 1025px) {
+      display: none;
+    }
+  }
+
+  &__brand {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      min-height: 28px;
+      flex-shrink: 0;
+      display: block;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 1024px) {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+
+  &__badge-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px 4px 4px;
+  }
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 1025px) {
+    padding: 2rem 2.5rem;
+  }
+
+  /* Calendar fills viewport — no page scroll on that route */
+  &:has(app-calendar) {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 1025px) {
+  .layout__drawer {
+    display: none !important;
+  }
+}
+
+:host ::ng-deep {
+  .mat-drawer-backdrop {
+    background: rgba(15, 23, 42, 0.5);
+  }
+
+  .mat-drawer-inner-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .mat-sidenav-content {
+    overflow-x: hidden;
+  }
+}

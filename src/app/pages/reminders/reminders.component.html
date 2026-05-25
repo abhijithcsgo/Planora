@@ -1,0 +1,40 @@
+<app-page-header
+  title="Reminders"
+  subtitle="Upcoming notifications and alert history"
+/>
+
+<div class="reminders-actions">
+  <button mat-stroked-button (click)="enableNotifications()">
+    <mat-icon>notifications</mat-icon>
+    Enable browser notifications
+  </button>
+</div>
+
+@if (reminders$ | async; as reminders) {
+  @if (reminders.length) {
+    <div class="reminder-cards">
+      @for (r of reminders; track r.id) {
+        <article class="reminder-card" [class.dismissed]="r.dismissed">
+          <div class="reminder-card__icon">
+            <mat-icon>alarm</mat-icon>
+          </div>
+          <div class="reminder-card__body">
+            <h4>{{ r.taskTitle }}</h4>
+            <p>{{ r.reminderDateTime | date: 'full' }}</p>
+          </div>
+          @if (!r.dismissed) {
+            <button mat-button (click)="dismiss(r.id)">Dismiss</button>
+          } @else {
+            <span class="badge-dismissed">Dismissed</span>
+          }
+        </article>
+      }
+    </div>
+  } @else {
+    <app-empty-state
+      icon="notifications_off"
+      title="No reminders"
+      message="Enable reminders on tasks to see them here."
+    />
+  }
+}
